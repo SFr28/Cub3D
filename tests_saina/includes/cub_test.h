@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:26:14 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/03 17:36:00 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:45:20 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,14 @@ typedef struct s_game
 	int		bpp;
 	int		len;
 	int		endian;
+	
+	char	*data2;
+	int		bpp2;
+	int		len2;
+	int		endian2;
 
 	char	**map;
+	void	*texture[4];
 	
 	t_player	player;
 }			t_game;
@@ -95,5 +101,7 @@ bool	touch(float px, float py, t_game *game);
 void	draw_line(t_player *player, t_game *game, float start_x, int i);
 float	distance(int ray_x, int player_x, int ray_y, int player_y, t_game *game);
 int		ft_close(t_game *game);
+
+int	get_color(t_game *game, void *img, int x, int y);
 
 #endif
