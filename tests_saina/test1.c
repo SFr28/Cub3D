@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:17:47 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/03 13:48:50 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:05:24 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	move_player(t_player *player)
 
 	speed = 3;
 	angle_speed = 0.03;
-
 	if (player->left_rotate)
 		player->angle -= angle_speed;
 	if (player->right_rotate)

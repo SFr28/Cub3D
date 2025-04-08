@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:26:14 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/04 14:45:20 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:06:36 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define RIGHT 65363
 
 # define PI 3.14159265359
+# define MAX 2147483647
 
 # define DEBUG 0
 
@@ -97,11 +98,13 @@ int		key_press(int keycode, t_player *player);
 int		key_release(int keycode, t_player *player);
 void	move_player(t_player *player);
 
-bool	touch(float px, float py, t_game *game);
+int		touch(float px, float py, t_game *game);
 void	draw_line(t_player *player, t_game *game, float start_x, int i);
 float	distance(int ray_x, int player_x, int ray_y, int player_y, t_game *game);
 int		ft_close(t_game *game);
 
 int	get_color(t_game *game, void *img, int x, int y);
+int	wall_direction(t_player *player, int wx, int wy, int touch);
+int	improved_touch(t_game *game, int i, float start_x);
 
 #endif

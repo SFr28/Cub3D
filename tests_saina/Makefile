@@ -6,7 +6,7 @@
 #    By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/28 16:41:28 by sovincen          #+#    #+#              #
-#    Updated: 2025/04/03 17:35:41 by sfraslin         ###   ########.fr        #
+#    Updated: 2025/04/07 10:25:23 by sfraslin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ MINILIBX = ../git_cub3D/minilibx-linux/libmlx.a
 SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
-FILES = test.c test1.c test2.c\
+FILES = test.c test1.c test2.c test3.c
 
 SRCS = $(addprefix $(SRCS_DIR), $(FILES))
 
