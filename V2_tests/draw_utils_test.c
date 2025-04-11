@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:17:47 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/10 13:56:16 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:34:07 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,26 @@
 
 int	ft_touch(t_game *game, double sides[2], int steps[2], double delta[2])
 {
-	int	mx;
-	int	my;
 	int	wall_side;
 
-	mx = (int)game->vectors.pos_x;
-	my = (int)game->vectors.pos_y;
+	game->mx = (int)game->vectors.pos_x;
+	game->my = (int)game->vectors.pos_y;
 	wall_side = 2;
-	// printf("mx: %d ; my: %d\n", mx, my);
-	while (game->map[mx][my] != '1')
+	while (game->map[game->mx][game->my] != '1')
 	{
 		if (sides[0] < sides[1])
 		{
 			sides[0] += delta[0];
-			mx += steps[0];
+			game->mx += steps[0];
 			wall_side = 0;
 		}
 		else
 		{
 			sides[1] += delta[1];
-			my += steps[1];
+			game->my += steps[1];
 			wall_side = 1;	
 		}
 	}
-	game->mx = mx;
-	game->my = my;
 	return (wall_side);
 }
 
@@ -64,26 +59,26 @@ int	which_color(t_game *game, t_vector *vec, int side)
 	return (color);
 }
 
-void	img_pixel_put(t_game *game, int x, int y, int color)
+void	img_pixel_put(t_picture *img, int x, int y, int color)
 {
 	int	pixel;
 
 	if (!(x > 0 && x < WIDTH) || !(y > 0 && y < HEIGHT))
 		return ;
-	pixel = (y * game->len) + (x * 4);
-	if (game->endian == 1)
+	pixel = (y * img->len) + (x * 4);
+	if (img->endian == 1)
 	{
-		game->data[pixel + 0] = (color >> 24);
-		game->data[pixel + 1] = (color >> 16) & 0xFF;
-		game->data[pixel + 2] = (color >> 8) & 0xFF;
-		game->data[pixel + 3] = color & 0xFF;
+		img->data[pixel + 0] = (color >> 24);
+		img->data[pixel + 1] = (color >> 16) & 0xFF;
+		img->data[pixel + 2] = (color >> 8) & 0xFF;
+		img->data[pixel + 3] = color & 0xFF;
 	}
-	else if (game->endian == 0)
+	else if (img->endian == 0)
 	{
-		game->data[pixel + 0] = color & 0xFF;
-		game->data[pixel + 1] = (color >> 8) & 0xFF;
-		game->data[pixel + 2] = (color >> 16) & 0xFF;
-		game->data[pixel + 3] = (color >> 24);
+		img->data[pixel + 0] = color & 0xFF;
+		img->data[pixel + 1] = (color >> 8) & 0xFF;
+		img->data[pixel + 2] = (color >> 16) & 0xFF;
+		img->data[pixel + 3] = (color >> 24);
 	}
 }
 
@@ -97,7 +92,19 @@ void	clear_image(t_game *game)
 	{
 		x = -1;
 		while (x++ < WIDTH)
-		img_pixel_put(game, x, y, 0);
+		img_pixel_put(&game->picture, x, y, 0);
 		y++;
 	}
+}
+
+void	ft_fps(t_game *game)
+{
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	game->old_time = game->time;
+	game->time = (t.tv_sec * 1000 + t.tv_usec / 1000) - game->start_time;
+	game->frame_time = (game->time - game->old_time) / 1000.0;
+	game->p_speed = game->frame_time * 5.0;
+	game->r_speed = game->frame_time * 3.0;
 }

@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:17:47 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/10 14:13:01 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:32:39 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ int	draw_loop(t_game *game)
 
 	x = 0;
 	vec = &game->vectors;
-	move_up_down(game, &game->player, &game->vectors);
 	clear_image(game);
 	while (x < WIDTH)
 	{
-		vec->camera_x = 2 * x / (double)(WIDTH) - 1;
+		vec->camera_x = 2 * x / (double)WIDTH - 1;
 		vec->raydir_x = vec->dir_x + vec->plane_x * vec->camera_x;
 		vec->raydir_y = vec->dir_y + vec->plane_y * vec->camera_x;
 		draw_line(game, vec, x);
@@ -89,7 +88,6 @@ void	draw_line(t_game *game, t_vector *vec, int start_x)
 		distance = (sides[0] - delta[0]);
 	else
 		distance = (sides[1] - delta[1]);
-	// printf("distance: %f\n", distance);
 	draw_blocks(game, (int)(HEIGHT / distance), wall_side, start_x);
 }
 
@@ -99,22 +97,18 @@ void	draw_blocks(t_game *game, int cube_h, int side, int start_x)
 	int	end;
 	int	color;
 
-	// printf("DRAW_BLOCKS\n");
-	// printf("cub_h: %d\n", cube_h);
 	start_y = (HEIGHT - cube_h ) / 2;
 	if (start_y < 0)
 		start_y = 0;
 	end = (HEIGHT + cube_h) / 2;
 	if (end > HEIGHT)
 		end = HEIGHT - 1;
-	// printf("start_y: %d ; end: %d\n start_x: %d\n", start_y, end, start_x);
 	while (start_y < end)
 	{
 		color = which_color(game, &game->vectors, side);
-		img_pixel_put(game, start_x, start_y, color);
+		img_pixel_put(&game->picture, start_x, start_y, color);
 		start_y++;
 	}
+	ft_fps(game);
+	move_up_down(game, &game->player, &game->vectors);
 }
-
-// ((double)recup->ray.mapy - recup->ray.posy + (1 - (double)recup->ray.stepy) / 2) / recup->ray.raydiry;
-// 	recup->ray.lineheight = (int)(recup->ry / recup->ray.perpwalldist)

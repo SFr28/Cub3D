@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:17:47 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/10 13:57:49 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:42:18 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,67 +50,69 @@ static void	move_left_right(t_game *game, t_player *player, t_vector *vec)
 {	
 	if (player->key_right)
 	{
-		if (game->map[(int)(vec->pos_x + vec->plane_x * PSPEED)]
+		if (game->map[(int)(vec->pos_x + vec->plane_x * game->p_speed)]
 			[(int)vec->pos_y] != '1')
-			vec->pos_x += vec->plane_x * PSPEED;
+			vec->pos_x += vec->plane_x * game->p_speed;
 		if (game->map[(int)vec->pos_x]
-			[(int)(vec->pos_y + vec->plane_y * PSPEED)] != '1')
-			vec->pos_y += vec->plane_y * PSPEED;
+			[(int)(vec->pos_y + vec->plane_y * game->p_speed)] != '1')
+			vec->pos_y += vec->plane_y * game->p_speed;
 	}
 	if (player->key_left)
 	{
-		if (game->map[(int)(vec->pos_x - vec->plane_x * PSPEED)]
+		if (game->map[(int)(vec->pos_x - vec->plane_x * game->p_speed)]
 			[(int)vec->pos_y] != '1')
-			vec->pos_x -= vec->plane_x * PSPEED;
+			vec->pos_x -= vec->plane_x * game->p_speed;
 		if (game->map[(int)vec->pos_x]
-			[(int)(vec->pos_y - vec->plane_y * PSPEED)] != '1')
-			vec->pos_y -= vec->plane_y * PSPEED;
+			[(int)(vec->pos_y - vec->plane_y * game->p_speed)] != '1')
+			vec->pos_y -= vec->plane_y * game->p_speed;
 	}
 }
 
 void	move_up_down(t_game *game, t_player *player, t_vector *vec)
 {
-	rotation(player, vec);
+	rotation(game, player, vec);
 	if (player->key_up)
 	{
-		if (game->map[(int)(vec->pos_x + vec->dir_x * PSPEED)]
+		if (game->map[(int)(vec->pos_x + vec->dir_x * game->p_speed)]
 			[(int)vec->pos_y] != '1')
-			vec->pos_x += vec->dir_x * PSPEED;
+			vec->pos_x += vec->dir_x * game->p_speed;
 		if (game->map[(int)vec->pos_x]
-			[(int)(vec->pos_y + vec->dir_y * PSPEED)] != '1')
-			vec->pos_y += vec->dir_y * PSPEED;
+			[(int)(vec->pos_y + vec->dir_y * game->p_speed)] != '1')
+			vec->pos_y += vec->dir_y * game->p_speed;
 	}
 	if (player->key_down)
 	{
-		if (game->map[(int)(vec->pos_x - vec->dir_x * PSPEED)]
+		if (game->map[(int)(vec->pos_x - vec->dir_x * game->p_speed)]
 			[(int)vec->pos_y] != '1')
-			vec->pos_x -= vec->dir_x * PSPEED;
+			vec->pos_x -= vec->dir_x * game->p_speed;
 		if (game->map[(int)vec->pos_x]
-			[(int)(vec->pos_y - vec->dir_y * PSPEED)] != '1')
-			vec->pos_y -= vec->dir_y * PSPEED;
+			[(int)(vec->pos_y - vec->dir_y * game->p_speed)] != '1')
+			vec->pos_y -= vec->dir_y * game->p_speed;
 	}
 	move_left_right(game, player, vec);
 }
 
-void	rotation(t_player *player, t_vector *vec)
+void	rotation(t_game *game, t_player *player, t_vector *vec)
 {
 	double	old_dir_x;
 	double	old_plane_x;
+	double	speed;
 
 	old_dir_x = vec->dir_x;
 	old_plane_x = vec->plane_x;
+	speed = game->r_speed;
 	if (player->right_rotate)
 	{
-		vec->dir_x = vec->dir_x * cos(-RSPEED) - vec->dir_y * sin(-RSPEED);
-		vec->dir_y = old_dir_x * sin(-RSPEED) + vec->dir_y * cos(-RSPEED);
-		vec->plane_x = vec->plane_x * cos(-RSPEED) - vec->plane_y * sin(-RSPEED);
-		vec->plane_y = old_plane_x * sin(-RSPEED) + vec->plane_y * cos(-RSPEED);
+		vec->dir_x = vec->dir_x * cos(-speed) - vec->dir_y * sin(-speed);
+		vec->dir_y = old_dir_x * sin(-speed) + vec->dir_y * cos(-speed);
+		vec->plane_x = vec->plane_x * cos(-speed) - vec->plane_y * sin(-speed);
+		vec->plane_y = old_plane_x * sin(-speed) + vec->plane_y * cos(-speed);
 	}
 	if (player->left_rotate)
 	{
-		vec->dir_x = vec->dir_x * cos(RSPEED) - vec->dir_y * sin(RSPEED);
-		vec->dir_y = old_dir_x * sin(RSPEED) + vec->dir_y * cos(RSPEED);
-		vec->plane_x = vec->plane_x * cos(RSPEED) - vec->plane_y * sin(RSPEED);
-		vec->plane_y = old_plane_x * sin(RSPEED) + vec->plane_y * cos(RSPEED);
+		vec->dir_x = vec->dir_x * cos(speed) - vec->dir_y * sin(speed);
+		vec->dir_y = old_dir_x * sin(speed) + vec->dir_y * cos(speed);
+		vec->plane_x = vec->plane_x * cos(speed) - vec->plane_y * sin(speed);
+		vec->plane_y = old_plane_x * sin(speed) + vec->plane_y * cos(speed);
 	}
 }

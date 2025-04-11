@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:17:47 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/04/10 14:11:43 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:20:14 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,23 @@ static char	**get_map(void)
 
 void	init_game(t_game *game)
 {
+	struct timeval	time;
 	int	h;
 	int	w;
 	
+	gettimeofday(&time, NULL);
 	init_vectors(&game->vectors);
 	init_player(game);
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
-	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
-	game->data = mlx_get_data_addr(game->img, &game->bpp, &game->len, &game->endian);
+	init_picture(game);
 	game->map = get_map();
+	game->start_time = time.tv_sec * 1000 + time.tv_usec / 1000;
+	game->time = 0;
+	game->old_time = 0;
+	game->frame_time = 0;
+	game->p_speed = 0;
+	game->r_speed = 0;
 	game->texture[0] = mlx_xpm_file_to_image(game->mlx, "brick_wall_brown.xpm", &w, &h);
 }
 
@@ -55,8 +62,6 @@ void	init_player(t_game *game)
 	t_player	*player;
 	
 	player = &game->player;
-	player->x = 1;
-	player->y = 2;
 	player->key_down = false;
 	player->key_up = false;
 	player->key_right = false;
@@ -67,13 +72,21 @@ void	init_player(t_game *game)
 
 void	init_vectors(t_vector *vectors)
 {
-	vectors->pos_x = 12;
-	vectors->pos_y = 14;
+	vectors->pos_x = 8;
+	vectors->pos_y = 9;
 	vectors->dir_x = -1;
 	vectors->dir_y = 0;
 	vectors->plane_x = 0;
 	vectors->plane_y = 0.66;
-	vectors->camera_x = 0;
 	vectors->raydir_x = 0;
 	vectors->raydir_y = 0;
+}
+
+void	init_picture(t_game *game)
+{
+	t_picture	*p;
+
+	p = &game->picture;
+	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	p->data = mlx_get_data_addr(game->img, &p->bpp, &p->len, &p->endian);
 }
